@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programming Languages</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Neue+Haas+Grotesk+Display+Pro:wght@400;500&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0a0905;
+  --paper:#f0ece2;
+  --ecru:#e4dfd0;
+  --dust:#c8c2b0;
+  --smoke:#9a9384;
+  --void:#1a1710;
+  --serif:'Cormorant','Georgia',serif;
+  --caps:'Syncopate',sans-serif;
+  --body:'Neue Haas Grotesk Display Pro','Helvetica Neue',sans-serif;
+  --mono:'Courier New',monospace;
+  --gold:#b8960c;
+}
+html{scroll-behavior:smooth;background:var(--ink)}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:13px;
+  line-height:1.6;
+  overflow-x:hidden;
+  cursor:crosshair;
+}
+*{cursor:crosshair!important}
+body{animation:pageReveal 1s ease}
+@keyframes pageReveal{from{opacity:0}to{opacity:1}}
+
+/* ══ MASTHEAD ══ */
+.mast{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:48px;
+  background:var(--ink);
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:0 3rem;
+  border-bottom:1px solid #2a2720;
+}
+.mast-l,.mast-r{
+  font-family:var(--caps);
+  font-size:7px;
+  letter-spacing:0.3em;
+  color:#484440;
+  text-transform:uppercase;
+}
+.mast-r{text-align:right}
+.mast-c{
+  font-family:var(--serif);
+  font-size:18px;
+  font-weight:300;
+  letter-spacing:0.15em;
+  color:var(--paper);
+  text-align:center;
+}
+
+/* ══ NAV ══ */
+.nav{
+  position:fixed;top:48px;left:0;right:0;z-index:299;
+  background:var(--paper);
+  border-bottom:1px solid var(--dust);
+  display:flex;
+  align-items:stretch;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.nav::-webkit-scrollbar{display:none}
+.nb{
+  font-family:var(--caps);
+  font-size:7px;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--smoke);
+  padding:14px 20px;
+  border:none;
+  background:none;
+  border-bottom:1.5px solid transparent;
+  white-space:nowrap;
+  transition:color .2s,border-color .2s;
+  position:relative;
+}
+.nb::after{
+  content:attr(data-n);
+  position:absolute;top:8px;right:8px;
+  font-family:var(--serif);
+  font-size:9px;
+  color:var(--dust);
+}
+.nb:hover{color:var(--ink)}
+.nb.on{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* ══ PAGE ══ */
+.page{margin-top:96px}
+.sec{display:none}
+.sec.on{display:block;animation:secIn .5s cubic-bezier(.22,1,.36,1)}
+@keyframes secIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ HERO ══ */
+.hero{
+  display:grid;
+  grid-template-columns:55% 45%;
+  min-height:72vh;
+  border-bottom:1px solid var(--dust);
+  overflow:hidden;
+  position:relative;
+}
+.hero-l{
+  padding:5rem 4rem 4rem;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  position:relative;z-index:2;
+  border-right:1px solid var(--dust);
+}
+.hero-issue{
+  font-family:var(--caps);font-size:7px;letter-spacing:.35em;
+  color:var(--smoke);margin-bottom:2.5rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.hero-issue::before{content:'';display:block;width:32px;height:1px;background:var(--dust)}
+.h-num{
+  font-family:var(--serif);
+  font-size:clamp(90px,16vw,200px);
+  font-weight:300;color:var(--ecru);
+  line-height:.85;letter-spacing:-.03em;
+  position:absolute;top:2.5rem;left:2.5rem;
+  user-select:none;z-index:1;
+  transition:transform 1.2s cubic-bezier(.22,1,.36,1),color 1.2s;
+}
+.hero:hover .h-num{transform:scale(1.04) translateX(8px);color:var(--dust)}
+.h-title{
+  font-family:var(--serif);
+  font-size:clamp(40px,5.5vw,70px);
+  font-weight:600;line-height:1.0;
+  letter-spacing:-.02em;
+  position:relative;z-index:2;
+  margin-bottom:1.2rem;
+}
+.h-title em{font-weight:300;font-style:italic;display:block}
+.h-sub{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:15px;
+  color:var(--smoke);
+  max-width:380px;
+  line-height:1.8;
+  position:relative;z-index:2;
+}
+.hero-r{
+  background:var(--ink);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ══ BODY ══ */
+.bd{padding:4.5rem 4rem 6rem}
+
+/* ══ LABELS ══ */
+.lbl{
+  font-family:var(--caps);font-size:7px;letter-spacing:.35em;
+  text-transform:uppercase;color:var(--smoke);
+  margin-bottom:1rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.lbl::after{content:'';flex:1;height:1px;background:var(--dust)}
+
+/* ══ PULL ══ */
+.pull{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(22px,3vw,36px);
+  font-weight:300;line-height:1.35;
+  border-top:2px solid var(--ink);
+  padding:1.8rem 0 1.4rem;
+  margin:3rem 0;
+  max-width:700px;
+}
+
+/* ══ CODE ══ */
+.code{
+  background:var(--ink);color:#bab6a8;
+  font-family:var(--mono);font-size:12px;
+  line-height:2;padding:2rem 2.5rem;
+  margin:2rem 0;overflow-x:auto;position:relative;
+}
+.code::before{
+  content:attr(data-l);position:absolute;top:0;right:0;
+  font-family:var(--caps);font-size:6.5px;letter-spacing:.28em;
+  text-transform:uppercase;color:#3a3630;
+  padding:7px 14px;border-left:1px solid #2a2720;border-bottom:1px solid #2a2720;
+}
+.ck{color:#7a7670}.cf{color:#e0dbd0}.cn{color:#a8a498}.cc{color:#444040;font-style:italic}
+
+/* ══ RULE BOX ══ */
+.rb{
+  border:1px solid var(--dust);
+  padding:1.6rem 2rem;margin:1.4rem 0;
+  font-family:var(--mono);font-size:12px;line-height:2.1;
+  color:var(--smoke);background:#faf7f0;
+  position:relative;overflow:hidden;
+  transition:border-color .3s,box-shadow .3s;
+}
+.rb:hover{border-color:var(--ink);box-shadow:4px 4px 0 var(--ecru)}
+.rb::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--ink);transform:scaleY(0);transform-origin:bottom;
+  transition:transform .4s cubic-bezier(.22,1,.36,1);
+}
+.rb:hover::before{transform:scaleY(1)}
+.rb-l{
+  font-family:var(--caps);font-size:7px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--smoke);
+  border-bottom:1px solid var(--dust);
+  padding-bottom:.7rem;margin-bottom:1rem;
+}
+.rb .hi{color:var(--ink);font-weight:bold}
+
+/* ══ GRIDS ══ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin:2.5rem 0}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;margin:2.5rem 0}
+.gc{border-top:2px solid var(--ink);padding-top:1.4rem}
+.gc h4{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:.8rem}
+.gc p,.gc li{font-size:12.5px;color:var(--smoke);line-height:1.85}
+.gc ul,.gc ol{padding-left:1.2rem}
+.gc li{margin-bottom:.3rem}
+
+/* ══ ANSWER ══ */
+.ans{
+  border:2px solid var(--ink);padding:2rem 2.4rem;margin:2rem 0;
+  position:relative;
+}
+.ans::before{
+  content:'';position:absolute;top:6px;left:6px;right:-6px;bottom:-6px;
+  border:1px solid var(--dust);z-index:-1;
+}
+.ans-l{font-family:var(--caps);font-size:7px;letter-spacing:.3em;color:var(--smoke);margin-bottom:.6rem}
+.ans-v{font-family:var(--serif);font-size:30px;font-weight:400}
+.ans-n{font-family:var(--mono);font-size:11px;color:var(--smoke);margin-top:.4rem}
+
+/* ══ NOTE ══ */
+.note{
+  border-left:2px solid var(--ink);padding:.8rem 1.5rem;
+  margin:2rem 0;font-family:var(--serif);font-style:italic;
+  font-size:14px;color:var(--smoke);line-height:1.85;
+}
+.note strong{font-style:normal;font-family:var(--caps);font-size:10px;letter-spacing:.1em;color:var(--ink)}
+
+/* ══ HR ══ */
+hr{border:none;border-top:1px solid var(--dust);margin:3rem 0}
+hr.bold{border-top:2px solid var(--ink);margin:3rem 0}
+
+/* ══ TRACE TABLE ══ */
+.tt{width:100%;border-collapse:collapse;margin:2rem 0;font-family:var(--mono);font-size:11.5px}
+.tt th{
+  font-family:var(--caps);font-size:7px;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--smoke);text-align:left;
+  padding:.6rem 1rem;border-bottom:1px solid var(--ink);font-weight:normal;
+}
+.tt td{
+  padding:.65rem 1rem;border-bottom:1px solid var(--ecru);
+  color:var(--smoke);vertical-align:top;line-height:1.65;
+  transition:background .15s;
+}
+.tt tr:hover td{background:var(--ecru);color:var(--ink)}
+.tt .em{color:var(--ink)}
+.tt .st{color:var(--dust);font-size:10px}
+.tt .rl{font-family:var(--caps);font-size:7px;letter-spacing:.15em;color:var(--dust);white-space:nowrap}
+
+/* ══════════════════════════════════════════════
+   INTERACTIVE CAROUSEL
+══════════════════════════════════════════════ */
+.carousel-wrap{
+  margin:3rem 0;
+  border:1px solid var(--dust);
+  overflow:hidden;
+  position:relative;
+}
+.carousel-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.2rem 2rem;
+  border-bottom:1px solid var(--dust);
+  background:#faf7f0;
+}
+.carousel-title{
+  font-family:var(--caps);font-size:8px;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--smoke);
+}
+.carousel-nav{display:flex;gap:.5rem;align-items:center}
+.car-btn{
+  border:1px solid var(--dust);background:none;padding:5px 16px;
+  font-family:var(--caps);font-size:9px;letter-spacing:.2em;
+  color:var(--smoke);transition:all .2s;
+}
+.car-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.car-counter{
+  font-family:var(--serif);font-size:15px;font-weight:300;
+  color:var(--dust);padding:0 .5rem;min-width:50px;text-align:center;
+}
+.carousel-track{
+  display:flex;
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+}
+.car-slide{
+  min-width:100%;
+  padding:2.5rem 2.5rem;
+  opacity:0;
+  transition:opacity .4s;
+  pointer-events:none;
+}
+.car-slide.active{opacity:1;pointer-events:all}
+.car-slide-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:2rem;gap:2rem;
+}
+.car-q{
+  font-family:var(--serif);
+  font-size:clamp(16px,2vw,22px);
+  font-weight:600;line-height:1.3;
+  max-width:560px;
+}
+.car-diff{
+  font-family:var(--caps);font-size:7px;letter-spacing:.25em;
+  text-transform:uppercase;padding:4px 14px;
+  border:1px solid var(--dust);color:var(--smoke);
+  white-space:nowrap;flex-shrink:0;
+}
+.car-diff.hard{border-color:var(--ink);color:var(--ink)}
+.car-diff.med{border-color:var(--smoke);color:var(--smoke)}
+
+/* reveal steps */
+.steps-wrap{margin-top:1.5rem}
+.step{
+  display:grid;
+  grid-template-columns:36px 1fr;
+  gap:1rem;
+  margin-bottom:1.2rem;
+  opacity:0;
+  transform:translateX(-8px);
+  transition:opacity .4s,transform .4s;
+}
+.step.shown{opacity:1;transform:translateX(0)}
+.step-n{
+  font-family:var(--serif);font-size:28px;font-weight:600;
+  color:var(--dust);line-height:1;margin-top:2px;text-align:right;
+}
+.step-body{border-top:1px solid var(--ecru);padding-top:.8rem}
+.step-lbl{
+  font-family:var(--caps);font-size:7px;letter-spacing:.28em;
+  color:var(--smoke);margin-bottom:.4rem;
+}
+.step-content{
+  font-family:var(--mono);font-size:12px;line-height:1.9;
+  color:var(--smoke);
+}
+.step-content .hi{color:var(--ink)}
+.step-content .ok{color:#2a7a2a}
+.reveal-btn{
+  border:1px solid var(--ink);background:none;
+  padding:8px 24px;margin-top:1rem;
+  font-family:var(--caps);font-size:8px;letter-spacing:.25em;
+  color:var(--ink);
+  transition:all .2s;
+}
+.reveal-btn:hover{background:var(--ink);color:var(--paper)}
+.reveal-btn:disabled{opacity:.3;pointer-events:none}
+
+/* answer reveal */
+.ans-reveal{
+  margin-top:2rem;border:2px solid var(--ink);padding:1.8rem 2rem;
+  display:none;
+  animation:fadeIn .4s ease;
+}
+.ans-reveal.shown{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.ans-tag{
+  font-family:var(--caps);font-size:7px;letter-spacing:.3em;
+  color:var(--smoke);margin-bottom:.8rem;
+}
+.ans-body{
+  font-family:var(--serif);font-size:22px;font-weight:400;
+  line-height:1.35;
+}
+
+/* video link */
+.vid-link{
+  display:flex;align-items:center;gap:1rem;
+  border:1px solid var(--dust);padding:1rem 1.5rem;
+  margin:1.5rem 0;text-decoration:none;
+  transition:border-color .2s,background .2s;
+  position:relative;overflow:hidden;
+}
+.vid-link:hover{border-color:var(--ink);background:var(--ecru)}
+.vid-icon{
+  width:36px;height:36px;border:1px solid var(--dust);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .2s;
+}
+.vid-link:hover .vid-icon{background:var(--ink)}
+.vid-icon svg{width:14px;height:14px}
+.vid-link:hover .vid-icon svg path{fill:var(--paper)}
+.vid-icon svg path{fill:var(--ink);transition:fill .2s}
+.vid-meta{flex:1}
+.vid-tag{font-family:var(--caps);font-size:7px;letter-spacing:.28em;color:var(--smoke);margin-bottom:3px}
+.vid-title{font-family:var(--serif);font-size:14px;font-weight:600}
+.vid-src{font-family:var(--caps);font-size:7px;letter-spacing:.15em;color:var(--smoke)}
+.vid-arr{font-family:var(--serif);font-size:20px;color:var(--dust);transition:transform .2s}
+.vid-link:hover .vid-arr{transform:translateX(4px);color:var(--ink)}
+
+/* scope animator */
+.scope-anim{
+  background:var(--ink);padding:2rem;margin:2rem 0;
+  position:relative;min-height:240px;
+}
+.sa-title{
+  font-family:var(--caps);font-size:7px;letter-spacing:.3em;
+  color:#484440;margin-bottom:1.5rem;
+}
+.sa-cols{display:grid;grid-template-columns:1fr 1px 1fr;gap:1.5rem}
+.sa-div{background:#2a2720}
+.sa-col h5{
+  font-family:var(--caps);font-size:7px;letter-spacing:.28em;
+  color:#484440;margin-bottom:1rem;
+}
+.sa-frame{
+  border:1px solid #2a2720;padding:.7rem 1rem;
+  font-family:var(--mono);font-size:11px;line-height:1.7;
+  color:#888074;margin-bottom:4px;
+  transition:border-color .3s,background .3s;
+}
+.sa-frame.active{border-color:#c4c0b4;background:#1a1710;color:#f0ece2}
+.sa-frame .fl{
+  font-family:var(--caps);font-size:6.5px;letter-spacing:.2em;
+  color:#484440;display:block;margin-bottom:2px;
+}
+.sa-result{
+  margin-top:1.5rem;text-align:center;
+  font-family:var(--serif);
+}
+.sa-result span{
+  font-size:52px;font-weight:600;color:var(--paper);
+  display:inline-block;
+  animation:numPop .6s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes numPop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.sa-label{font-family:var(--caps);font-size:7.5px;letter-spacing:.2em;color:#484440;display:block;margin-top:.3rem}
+
+/* loop stepper */
+.loop-step{
+  margin:2rem 0;border:1px solid var(--dust);overflow:hidden;
+}
+.ls-ctrl{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 1.5rem;background:#faf7f0;border-bottom:1px solid var(--dust);
+}
+.ls-title{font-family:var(--caps);font-size:7.5px;letter-spacing:.28em;color:var(--smoke)}
+.ls-btns{display:flex;gap:.5rem}
+.ls-btn{
+  border:1px solid var(--dust);background:none;padding:4px 14px;
+  font-family:var(--caps);font-size:7.5px;letter-spacing:.15em;color:var(--smoke);
+  transition:all .2s;
+}
+.ls-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.ls-body{padding:1.5rem}
+.ls-row{
+  display:grid;grid-template-columns:48px 1fr 80px;gap:1rem;
+  align-items:center;padding:.55rem 0;
+  border-bottom:1px solid var(--ecru);
+  transition:background .2s;
+}
+.ls-row:last-child{border-bottom:none}
+.ls-row.curr{background:var(--ecru);margin:0 -1.5rem;padding:.55rem 1.5rem}
+.ls-i{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--dust);text-align:right}
+.ls-conf{font-family:var(--mono);font-size:11px;color:var(--smoke);line-height:1.6}
+.ls-conf .hi{color:var(--ink)}
+.ls-state{
+  font-family:var(--mono);font-size:10px;color:var(--dust);
+  text-align:right;
+}
+.ls-prog{
+  height:3px;background:var(--ecru);margin:1rem 0;overflow:hidden;
+}
+.ls-fill{
+  height:100%;background:var(--ink);
+  transition:width .4s cubic-bezier(.22,1,.36,1);
+}
+
+/* param table interactive */
+.pt-wrap{margin:2rem 0}
+.pt-line{
+  display:grid;grid-template-columns:48px 120px 1fr 1fr 1fr;
+  gap:.8rem;padding:.7rem 1rem;
+  border-bottom:1px solid var(--ecru);
+  font-family:var(--mono);font-size:11.5px;
+  transition:background .15s;
+  cursor:pointer;
+}
+.pt-line:hover{background:var(--ecru)}
+.pt-line.active{background:var(--ecru);border-left:2px solid var(--ink)}
+.pt-head{
+  display:grid;grid-template-columns:48px 120px 1fr 1fr 1fr;
+  gap:.8rem;padding:.5rem 1rem;
+  background:var(--ink);
+}
+.pt-head span{
+  font-family:var(--caps);font-size:7px;letter-spacing:.22em;
+  text-transform:uppercase;color:#484440;
+}
+.pt-ln{color:var(--dust)}
+.pt-op{color:var(--ink)}
+.pt-x,.pt-y,.pt-z{color:var(--smoke)}
+.pt-changed{color:var(--ink);font-weight:bold}
+.pt-tooltip{
+  display:none;background:var(--void);color:#c4c0b4;
+  font-family:var(--mono);font-size:11px;line-height:1.9;
+  padding:1.2rem 1.5rem;margin:0 0 .5rem;
+  border-left:2px solid var(--dust);
+}
+.pt-tooltip.shown{display:block}
+
+/* array viz */
+.arr-viz{display:flex;gap:3px;margin:1.5rem 0;align-items:flex-end}
+.av-cell{
+  flex:1;border:1px solid var(--dust);
+  text-align:center;font-family:var(--mono);
+  transition:all .4s cubic-bezier(.22,1,.36,1);
+  position:relative;
+  overflow:hidden;
+}
+.av-cell::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  background:var(--ecru);height:0;transition:height .4s;
+}
+.av-cell.changed::before{height:100%}
+.av-idx{
+  font-family:var(--caps);font-size:7px;letter-spacing:.2em;
+  color:var(--smoke);padding:4px;
+  position:relative;z-index:1;
+}
+.av-val{
+  font-family:var(--serif);font-size:28px;font-weight:600;
+  padding:8px;line-height:1;
+  position:relative;z-index:1;
+  transition:color .4s;
+}
+.av-cell.changed{border-color:var(--ink)}
+.av-cell.changed .av-val{color:var(--ink)}
+.av-i-ptr{
+  display:flex;gap:3px;margin-bottom:6px;
+}
+.av-ptr{
+  flex:1;text-align:center;
+  font-family:var(--caps);font-size:8px;letter-spacing:.15em;
+  color:transparent;transition:color .3s;
+  height:16px;line-height:16px;
+}
+.av-ptr.active{color:var(--ink)}
+
+/* env boxes */
+.envs{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+.env{border:1px solid var(--dust);transition:border-color .3s}
+.env:hover{border-color:var(--ink)}
+.env-hd{
+  font-family:var(--caps);font-size:7px;letter-spacing:.28em;
+  text-transform:uppercase;background:var(--ink);color:var(--paper);
+  padding:8px 16px;
+}
+.env-row{
+  display:flex;justify-content:space-between;
+  padding:.4rem 1rem;border-bottom:1px solid var(--ecru);
+  font-family:var(--mono);font-size:11.5px;
+}
+.env-row:last-child{border-bottom:none}
+.ev{color:var(--ink)}.ev2{color:var(--smoke)}
+.ev2.found{color:var(--ink);font-weight:bold}
+
+/* cmp table */
+.ct{width:100%;border-collapse:collapse;margin:2rem 0}
+.ct th{
+  font-family:var(--caps);font-size:7px;letter-spacing:.22em;
+  text-transform:uppercase;text-align:left;
+  padding:.7rem 1.1rem;border-bottom:2px solid var(--ink);
+  font-weight:normal;color:var(--smoke);
+}
+.ct td{
+  padding:.8rem 1.1rem;border-bottom:1px solid var(--ecru);
+  font-size:12.5px;color:var(--smoke);vertical-align:top;
+  line-height:1.7;transition:background .15s;
+}
+.ct tr:hover td{background:var(--ecru)}
+.ct tr:last-child td{border-bottom:none}
+.ct .mo{font-family:var(--mono);font-size:11.5px;color:var(--ink)}
+
+/* progress bar */
+.pbar{
+  position:fixed;top:0;left:0;right:0;z-index:400;
+  height:2px;background:transparent;
+}
+.pfill{
+  height:100%;background:var(--ink);
+  transition:width .3s;width:0;
+}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-r{display:none}
+  .hero-l{padding:3.5rem 2rem 2.5rem}
+  .bd{padding:3rem 2rem 4rem}
+  .g2,.g3,.envs{grid-template-columns:1fr}
+  .mast{padding:0 1.5rem}
+  .ls-row,.pt-line,.pt-head{grid-template-columns:36px 1fr 60px}
+  .pt-line .pt-x,.pt-line .pt-y,.pt-line .pt-z,.pt-head span:nth-child(3),.pt-head span:nth-child(4),.pt-head span:nth-child(5){display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="pbar"><div class="pfill" id="pf"></div></div>
+
+<header class="mast">
+  <span class="mast-l">Notes</span>
+  <span class="mast-c">Programming Languages</span>
+  <span class="mast-r">Parcial II</span>
+</header>
+
+<nav class="nav">
+  <button class="nb on" data-n="01" onclick="show('s1',this)">Type Inference</button>
+  <button class="nb" data-n="02" onclick="show('s2',this)">Scope</button>
+  <button class="nb" data-n="03" onclick="show('s3',this)">for / repeat</button>
+  <button class="nb" data-n="04" onclick="show('s4',this)">For Trace</button>
+  <button class="nb" data-n="05" onclick="show('s5',this)">testScope</button>
+  <button class="nb" data-n="06" onclick="show('s6',this)">Parameters</button>
+  <button class="nb" data-n="07" onclick="show('s7',this)">testParams</button>
+</nav>
+
+<main class="page">
+
+<!-- ═══════════════════════════════════
+     S1 · TYPE INFERENCE
+═══════════════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-issue">Type System</div>
+    <div class="h-num">01</div>
+    <h1 class="h-title">Type<br><em>Inference</em></h1>
+    <p class="h-sub">Reading types from how arguments are used — not from what they are called.</p>
+  </div>
+  <div class="hero-r">
+    <svg viewBox="0 0 380 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <defs>
+        <style>
+          .tn{animation:tnIn .6s cubic-bezier(.22,1,.36,1) both}
+          @keyframes tnIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+          .tl{stroke-dasharray:150;stroke-dashoffset:150;animation:tlD .7s ease both}
+          @keyframes tlD{to{stroke-dashoffset:0}}
+        </style>
+      </defs>
+      <rect x="110" y="16" width="160" height="48" fill="none" stroke="#3a3730" stroke-width="1" class="tn" style="animation-delay:.1s"/>
+      <text x="190" y="36" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#606060" letter-spacing="3" class="tn" style="animation-delay:.15s">FUNCTION</text>
+      <text x="190" y="56" text-anchor="middle" font-family="Courier New" font-size="12" fill="#f0ece2" class="tn" style="animation-delay:.2s">count</text>
+      <line x1="190" y1="64" x2="100" y2="118" stroke="#3a3730" stroke-width="1" class="tl" style="animation-delay:.35s"/>
+      <line x1="190" y1="64" x2="290" y2="118" stroke="#3a3730" stroke-width="1" class="tl" style="animation-delay:.4s"/>
+      <rect x="30" y="118" width="130" height="42" fill="#1a1710" stroke="#3a3730" class="tn" style="animation-delay:.45s"/>
+      <text x="95" y="134" text-anchor="middle" font-family="Courier New" font-size="9" fill="#7a7670">(null? l)</text>
+      <text x="95" y="150" text-anchor="middle" font-family="Courier New" font-size="9" fill="#c4c0b4">l : T list</text>
+      <rect x="220" y="118" width="130" height="42" fill="#1a1710" stroke="#3a3730" class="tn" style="animation-delay:.5s"/>
+      <text x="285" y="134" text-anchor="middle" font-family="Courier New" font-size="9" fill="#7a7670">(equal? (car l) x)</text>
+      <text x="285" y="150" text-anchor="middle" font-family="Courier New" font-size="9" fill="#c4c0b4">x : T</text>
+      <line x1="95" y1="160" x2="70" y2="208" stroke="#3a3730" stroke-width="1" class="tl" style="animation-delay:.6s"/>
+      <line x1="95" y1="160" x2="160" y2="208" stroke="#3a3730" stroke-width="1" class="tl" style="animation-delay:.65s"/>
+      <line x1="285" y1="160" x2="230" y2="208" stroke="#3a3730" stroke-width="1" class="tl" style="animation-delay:.7s"/>
+      <line x1="285" y1="160" x2="330" y2="208" stroke="#3a3730" stroke-width="1" class="tl" style="animation-delay:.75s"/>
+      <rect x="20" y="208" width="100" height="32" fill="#111008" class="tn" style="animation-delay:.8s"/>
+      <text x="70" y="228" text-anchor="middle" font-family="Courier New" font-size="10" fill="#f0ece2">0 → Int</text>
+      <rect x="126" y="208" width="100" height="32" fill="#111008" class="tn" style="animation-delay:.85s"/>
+      <text x="176" y="228" text-anchor="middle" font-family="Courier New" font-size="10" fill="#f0ece2">1+count → Int</text>
+      <rect x="192" y="208" width="72" height="32" fill="#1a1710" class="tn" style="animation-delay:.9s"/>
+      <text x="228" y="228" text-anchor="middle" font-family="Courier New" font-size="10" fill="#c4c0b4">car l → T</text>
+      <rect x="270" y="208" width="88" height="32" fill="#1a1710" class="tn" style="animation-delay:.95s"/>
+      <text x="314" y="228" text-anchor="middle" font-family="Courier New" font-size="10" fill="#c4c0b4">cdr l → T list</text>
+      <rect x="70" y="278" width="240" height="62" fill="none" stroke="#c4c0b4" stroke-width="1.5" class="tn" style="animation-delay:1.1s"/>
+      <text x="190" y="300" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#888074" letter-spacing="2">TYPE SIGNATURE</text>
+      <text x="190" y="324" text-anchor="middle" font-family="Courier New" font-size="14" fill="#f0ece2">T → T list → Int</text>
+    </svg>
+  </div>
+</div>
+
+<div class="bd">
+  <div class="lbl">Theory — how type inference works</div>
+  <div class="g2">
+    <div class="gc">
+      <h4>The Method</h4>
+      <p>Assign a fresh type variable to each unknown. Then read every operation as a constraint. Keep tightening until every variable is resolved — or until you realize something is polymorphic.</p>
+    </div>
+    <div class="gc">
+      <h4>Polymorphism</h4>
+      <p>When a function works for any type T — as long as the constraints are satisfied — the result is parametric polymorphism. The type signature contains T as a free variable, not a concrete type.</p>
+    </div>
+  </div>
+
+  <div class="pull">A function's type is a theorem about its behavior — derived from the constraints imposed by every operation inside it.</div>
+
+  <div class="lbl">Step-by-step derivations</div>
+
+  <div class="g3">
+    <div class="rb">
+      <div class="rb-l">mkStats(n)</div>
+      n * n<br>
+      → * requires Int<br>
+      → n : Int<br>
+      result: (n, n*n)<br><br>
+      <span class="hi">Int → (Int, Int)</span>
+    </div>
+    <div class="rb">
+      <div class="rb-l">mkSummary(s)</div>
+      length(s)<br>
+      → length requires String<br>
+      → s : String<br>
+      result: (s, length(s))<br><br>
+      <span class="hi">String → (String, Int)</span>
+    </div>
+    <div class="rb">
+      <div class="rb-l">count(x, l)</div>
+      null? → l : T list<br>
+      car l → T<br>
+      equal?(car l, x) → x : T<br>
+      returns 0 or 1+count<br><br>
+      <span class="hi">T → T list → Int</span>
+    </div>
+  </div>
+
+  <a href="https://www.youtube.com/watch?v=il3gD7XMdmA" target="_blank" rel="noopener" class="vid-link">
+    <div class="vid-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="vid-meta">
+      <div class="vid-tag">Recommended watch</div>
+      <div class="vid-title">Type Inference — how the algorithm actually works</div>
+      <div class="vid-src">YouTube · CS Foundations</div>
+    </div>
+    <span class="vid-arr">→</span>
+  </a>
+
+  <hr>
+
+  <div class="lbl">Exercises — type inference catalogue</div>
+
+  <div class="carousel-wrap" id="car-types">
+    <div class="carousel-header">
+      <span class="carousel-title">Type Inference Problems</span>
+      <div class="carousel-nav">
+        <button class="car-btn" onclick="carPrev('types')">← prev</button>
+        <span class="car-counter" id="types-ctr">1 / 5</span>
+        <button class="car-btn" onclick="carNext('types')">next →</button>
+      </div>
+    </div>
+    <div class="carousel-track" id="types-track">
+
+      <!-- SLIDE 1 -->
+      <div class="car-slide active">
+        <div class="car-slide-head">
+          <div class="car-q">What is the most general type of <code style="font-family:var(--mono)">mkStats</code>?<br>
+          <code style="font-family:var(--mono);font-size:13px">def mkStats(n) = (n, n * n)</code></div>
+          <span class="car-diff med">medium</span>
+        </div>
+        <div class="steps-wrap" id="sw-t1">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">Identify operations on n</div><div class="step-content">n * n — the * operator requires both operands to be <span class="hi">Int</span></div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">Type of n</div><div class="step-content">Since n * n requires Int, and n is the parameter → <span class="hi">n : Int</span></div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">Return type</div><div class="step-content">Result is (n, n*n) = (Int, Int) → return type is <span class="hi">(Int, Int)</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-t1',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-t1">
+          <div class="ans-tag">Answer</div>
+          <div class="ans-body" style="font-family:var(--mono);font-size:18px">mkStats : Int → (Int, Int)</div>
+        </div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-t1').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="car-slide">
+        <div class="car-slide-head">
+          <div class="car-q">What is the type of <code style="font-family:var(--mono)">process</code>?<br>
+          Hint: trace what each parameter is used for.</div>
+          <span class="car-diff hard">hard</span>
+        </div>
+        <div class="steps-wrap" id="sw-t2">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">value % 2</div><div class="step-content">% requires Int → <span class="hi">value : Int</span></div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">fstats(value)</div><div class="step-content">fstats receives an Int → fstats : <span class="hi">Int → ?</span><br>Result assigned to left, which is printed as left._2 (Int) → <span class="hi">fstats : Int → (Int, Int)</span></div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">fsummary(value.toString)</div><div class="step-content">Receives String → fsummary : <span class="hi">String → (String, Int)</span><br>right._1 + "!" → right._1 : String, so right : (String, Int)</div></div></div>
+          <div class="step"><div class="step-n">4</div><div class="step-body"><div class="step-lbl">Return</div><div class="step-content">process assigns but doesn't return → return type <span class="hi">Unit</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-t2',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-t2">
+          <div class="ans-tag">Answer</div>
+          <div class="ans-body" style="font-family:var(--mono);font-size:14px">process : Int → (Int→(Int,Int))<br>→ (String→(String,Int)) → Unit</div>
+        </div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-t2').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+      <!-- SLIDE 3 -->
+      <div class="car-slide">
+        <div class="car-slide-head">
+          <div class="car-q">Infer the type of <code style="font-family:var(--mono)">map</code>:<br>
+          <code style="font-family:var(--mono);font-size:12px">def map(f, lst) = if (null? lst) nil<br>else cons(f(car lst), map(f, cdr lst))</code></div>
+          <span class="car-diff hard">hard</span>
+        </div>
+        <div class="steps-wrap" id="sw-t3">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">lst is a list</div><div class="step-content">null?(lst) and car/cdr operations → <span class="hi">lst : A list</span> for some type A</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">f is applied to car lst</div><div class="step-content">f receives an A (head of lst) → <span class="hi">f : A → B</span> for some type B</div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">Result</div><div class="step-content">cons(f(car lst), ...) builds a list of B → result type <span class="hi">B list</span></div></div></div>
+          <div class="step"><div class="step-n">4</div><div class="step-body"><div class="step-lbl">Assemble</div><div class="step-content">f : A→B, lst : A list, result : B list<br>map takes both → <span class="hi">(A→B) → A list → B list</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-t3',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-t3">
+          <div class="ans-tag">Answer</div>
+          <div class="ans-body" style="font-family:var(--mono);font-size:16px">map : (A→B) → A list → B list</div>
+        </div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-t3').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+      <!-- SLIDE 4 -->
+      <div class="car-slide">
+        <div class="car-slide-head">
+          <div class="car-q">What are the types of <code style="font-family:var(--mono)">left</code> and <code style="font-family:var(--mono)">right</code> after the loop finishes?</div>
+          <span class="car-diff med">medium</span>
+        </div>
+        <div class="steps-wrap" id="sw-t4">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">left receives fstats(value)</div><div class="step-content">fstats : Int → (Int,Int) → <span class="hi">left : (Int, Int)</span></div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">right receives fsummary(value.toString)</div><div class="step-content">fsummary : String → (String,Int) → <span class="hi">right : (String, Int)</span></div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">Final values after full loop</div><div class="step-content">Last even n=4 → left = (4, 16)<br>Last odd n=5 → right = ("5", 1)</div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-t4',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-t4">
+          <div class="ans-tag">Answer</div>
+          <div class="ans-body" style="font-family:var(--mono);font-size:15px">left : (Int, Int) = (4, 16)<br>right : (String, Int) = ("5", 1)</div>
+        </div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-t4').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+      <!-- SLIDE 5 -->
+      <div class="car-slide">
+        <div class="car-slide-head">
+          <div class="car-q">What does each <code style="font-family:var(--mono)">println</code> print? What are the types of the expressions passed in?</div>
+          <span class="car-diff med">medium</span>
+        </div>
+        <div class="steps-wrap" id="sw-t5">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">left._2</div><div class="step-content">left = (4, 16), _2 = second element = 16<br>Type: <span class="hi">Int</span></div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">right._1 + "!"</div><div class="step-content">right = ("5", 1), _1 = "5"<br>"5" + "!" = "5!"  — Type: <span class="hi">String</span></div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">Output</div><div class="step-content">println(16) → prints <span class="hi">16</span><br>println("5!") → prints <span class="hi">5!</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-t5',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-t5">
+          <div class="ans-tag">Answer</div>
+          <div class="ans-body">16<br>5!</div>
+        </div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-t5').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+    </div><!-- /track -->
+  </div><!-- /carousel -->
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     S2 · SCOPE
+═══════════════════════════════════ -->
+<div class="sec" id="s2">
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-issue">Scoping Rules</div>
+    <div class="h-num">02</div>
+    <h1 class="h-title">Lexical<br><em>vs Dynamic</em></h1>
+    <p class="h-sub">The same function. Two languages. Two completely different answers.</p>
+  </div>
+  <div class="hero-r">
+    <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <text x="90" y="28" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#484440" letter-spacing="3">LEXICAL</text>
+      <text x="270" y="28" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#484440" letter-spacing="3">DYNAMIC</text>
+      <line x1="180" y1="16" x2="180" y2="284" stroke="#2a2720" stroke-width="1"/>
+      <rect x="14" y="38" width="130" height="44" fill="none" stroke="#3a3730" stroke-width="1"/>
+      <text x="22" y="55" font-family="'Syncopate',sans-serif" font-size="6" fill="#484440" letter-spacing="2">DEFINING ENV</text>
+      <text x="22" y="72" font-family="Courier New" font-size="10" fill="#bab6a8">y=10, x=4</text>
+      <line x1="79" y1="82" x2="79" y2="112" stroke="#3a3730" stroke-width="1" stroke-dasharray="4,3"/>
+      <rect x="14" y="112" width="130" height="40" fill="#111008" stroke="#c4c0b4" stroke-width="1.5"/>
+      <text x="22" y="128" font-family="'Syncopate',sans-serif" font-size="6" fill="#888074" letter-spacing="2">f (closure)</text>
+      <text x="22" y="144" font-family="Courier New" font-size="11" fill="#f0ece2">x+y+k = 17</text>
+      <text x="79" y="196" text-anchor="middle" font-family="'Cormorant',serif" font-size="52" font-weight="600" fill="#f0ece2">17</text>
+      <text x="79" y="216" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="2">use(f)</text>
+      <text x="79" y="258" text-anchor="middle" font-family="'Cormorant',serif" font-size="52" font-weight="600" fill="#f0ece2">32</text>
+      <text x="79" y="278" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="2">f(2) after x=20</text>
+      <rect x="196" y="38" width="150" height="26" fill="#1a1710" stroke="#2a2720"/>
+      <text x="206" y="55" font-family="Courier New" font-size="9.5" fill="#484440">global: x=10</text>
+      <rect x="196" y="66" width="150" height="26" fill="#2a2820" stroke="#2a2720"/>
+      <text x="206" y="83" font-family="Courier New" font-size="9.5" fill="#7a7670">main: x=4</text>
+      <rect x="196" y="94" width="150" height="30" fill="#3a3830" stroke="#c4c0b4" stroke-width="1"/>
+      <text x="206" y="108" font-family="Courier New" font-size="9.5" fill="#e0dbd0">use: x=1 ← found</text>
+      <text x="206" y="120" font-family="'Syncopate',sans-serif" font-size="6" fill="#888074" letter-spacing="1">most recent binding</text>
+      <rect x="196" y="126" width="150" height="26" fill="#1a1710" stroke="#2a2720"/>
+      <text x="206" y="143" font-family="Courier New" font-size="9.5" fill="#484440">f: k=3</text>
+      <text x="271" y="196" text-anchor="middle" font-family="'Cormorant',serif" font-size="52" font-weight="600" fill="#f0ece2">14</text>
+      <text x="271" y="216" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="2">use(f)</text>
+      <text x="271" y="258" text-anchor="middle" font-family="'Cormorant',serif" font-size="52" font-weight="600" fill="#f0ece2">32</text>
+      <text x="271" y="278" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="2">f(2) after x=20</text>
+    </svg>
+  </div>
+</div>
+<div class="bd">
+  <div class="g2">
+    <div class="gc"><h4>Lexical</h4><p>Free variables are bound at <em>definition time</em>. The function carries its environment as a closure. Source code structure determines everything.</p></div>
+    <div class="gc"><h4>Dynamic</h4><p>Free variables are bound at <em>call time</em>. Walk the runtime call stack; use the first matching binding you find.</p></div>
+  </div>
+
+  <div class="pull">Closures capture references, not snapshots. A mutation after closure creation will be visible on all subsequent calls.</div>
+
+  <div class="lbl">Interactive — scope resolution visualizer</div>
+  <p style="color:var(--smoke);font-size:12.5px;margin-bottom:1.5rem">Click each scope to see how the resolution plays out for <code style="font-family:var(--mono)">use(f)</code>:</p>
+
+  <div class="scope-anim" id="scopeViz">
+    <div class="sa-title">SCOPE RESOLUTION FOR use(f) → f(3)</div>
+    <div class="sa-cols">
+      <div class="sa-col">
+        <h5>LEXICAL SCOPE</h5>
+        <div class="sa-frame active" id="lx-make">
+          <span class="fl">make's env (defining scope of f)</span>
+          y = 10 &nbsp;|&nbsp; base = 5
+        </div>
+        <div class="sa-frame" id="lx-main">
+          <span class="fl">main's env</span>
+          x = 4
+        </div>
+        <div class="sa-frame" id="lx-f">
+          <span class="fl">f body</span>
+          x + y + k = 4 + 10 + 3
+        </div>
+        <div class="sa-result"><span id="lx-ans" style="display:none">17</span><span class="sa-label" id="lx-lbl" style="display:none">lexical result</span></div>
+      </div>
+      <div class="sa-div"></div>
+      <div class="sa-col">
+        <h5>DYNAMIC SCOPE</h5>
+        <div class="sa-frame" id="dy-global"><span class="fl">global</span>x = 10</div>
+        <div class="sa-frame" id="dy-main"><span class="fl">main</span>x = 4</div>
+        <div class="sa-frame active" id="dy-use"><span class="fl">use (most recent x!)</span>x = 1 ← used</div>
+        <div class="sa-frame" id="dy-f"><span class="fl">f body</span>x + y + k = 1 + 10 + 3</div>
+        <div class="sa-result"><span id="dy-ans" style="display:none">14</span><span class="sa-label" id="dy-lbl" style="display:none">dynamic result</span></div>
+      </div>
+    </div>
+  </div>
+  <button class="reveal-btn" onclick="animateScope()">animate resolution</button>
+
+  <a href="https://www.youtube.com/watch?v=GaAh4vTpkck" target="_blank" rel="noopener" class="vid-link">
+    <div class="vid-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="vid-meta">
+      <div class="vid-tag">Recommended watch</div>
+      <div class="vid-title">Lexical vs Dynamic Scope — explained with examples</div>
+      <div class="vid-src">YouTube · Programming Languages Series</div>
+    </div>
+    <span class="vid-arr">→</span>
+  </a>
+
+  <hr>
+  <div class="lbl">Exercises — scope catalogue</div>
+
+  <div class="carousel-wrap" id="car-scope">
+    <div class="carousel-header">
+      <span class="carousel-title">Scope Problems</span>
+      <div class="carousel-nav">
+        <button class="car-btn" onclick="carPrev('scope')">← prev</button>
+        <span class="car-counter" id="scope-ctr">1 / 4</span>
+        <button class="car-btn" onclick="carNext('scope')">next →</button>
+      </div>
+    </div>
+    <div class="carousel-track" id="scope-track">
+
+      <div class="car-slide active">
+        <div class="car-slide-head">
+          <div class="car-q">In the make/use example: what does <code style="font-family:var(--mono)">use(f)</code> print under <strong>lexical</strong> scope? Trace step by step.</div>
+          <span class="car-diff med">medium</span>
+        </div>
+        <div class="steps-wrap" id="sw-s1">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">make(5) executes</div><div class="step-content">y=5, f created, then y=y*2=<span class="hi">10</span>. Closure captures reference to y.</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">f's free variables</div><div class="step-content">x is free → resolved in main's scope → x=4<br>y is free → resolved in make's scope → y=<span class="hi">10</span> (mutated)</div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">f(3) = x + y + k</div><div class="step-content">= 4 + 10 + 3 = <span class="hi">17</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-s1',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-s1"><div class="ans-tag">Answer</div><div class="ans-body">17</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-s1').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+      <div class="car-slide">
+        <div class="car-slide-head">
+          <div class="car-q">In the make/use example: what does <code style="font-family:var(--mono)">use(f)</code> print under <strong>dynamic</strong> scope?</div>
+          <span class="car-diff med">medium</span>
+        </div>
+        <div class="steps-wrap" id="sw-s2">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">Call chain at use(f) → f(3)</div><div class="step-content">Stack: global → main → use → f<br>Walk upward for x: first found in <span class="hi">use: x=1</span></div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">y</div><div class="step-content">Walk stack for y: found in make's frame → y=10</div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">f(3) = x + y + k</div><div class="step-content">= <span class="hi">1</span> + 10 + 3 = <span class="hi">14</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-s2',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-s2"><div class="ans-tag">Answer</div><div class="ans-body">14</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-s2').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+      <div class="car-slide">
+        <div class="car-slide-head">
+          <div class="car-q">After <code style="font-family:var(--mono)">x = 20</code>, what does <code style="font-family:var(--mono)">f(2)</code> print under <strong>lexical</strong> scope?</div>
+          <span class="car-diff hard">hard</span>
+        </div>
+        <div class="steps-wrap" id="sw-s3">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">What changed?</div><div class="step-content">main's x is reassigned to 20. The closure captured the reference to main's x.</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">f(2) resolves</div><div class="step-content">x from main's scope → <span class="hi">20</span> (updated)<br>y from make's scope → still 10<br>k = 2</div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">Result</div><div class="step-content">20 + 10 + 2 = <span class="hi">32</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-s3',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-s3"><div class="ans-tag">Answer</div><div class="ans-body">32</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-s3').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+      <div class="car-slide">
+        <div class="car-slide-head">
+          <div class="car-q">After <code style="font-family:var(--mono)">x = 20</code>, what does <code style="font-family:var(--mono)">f(2)</code> print under <strong>dynamic</strong> scope?</div>
+          <span class="car-diff hard">hard</span>
+        </div>
+        <div class="steps-wrap" id="sw-s4">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">Call chain</div><div class="step-content">Stack: global → main → f<br>use is NOT on the stack this time.</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">Walk for x</div><div class="step-content">First x found in main → <span class="hi">x=20</span></div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">f(2) = x + y + k</div><div class="step-content">= <span class="hi">20</span> + 10 + 2 = <span class="hi">32</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-s4',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-s4"><div class="ans-tag">Answer</div><div class="ans-body">32</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-s4').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     S3 · FOR / REPEAT
+═══════════════════════════════════ -->
+<div class="sec" id="s3">
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-issue">Language Extension</div>
+    <div class="h-num">03</div>
+    <h1 class="h-title">for / repeat<br><em>Rules</em></h1>
+    <p class="h-sub">Reduce the guard. Base case. Unfold. The pattern never changes.</p>
+  </div>
+  <div class="hero-r">
+    <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <defs><style>.ra{animation:rIn .5s ease both}@keyframes rIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}</style></defs>
+      <text x="180" y="22" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#484440" letter-spacing="3" class="ra" style="animation-delay:.1s">for n1 to n2 do C</text>
+      <rect x="14" y="32" width="148" height="56" fill="#1a1710" stroke="#3a3730" class="ra" style="animation-delay:.2s"/>
+      <text x="24" y="49" font-family="'Syncopate',sans-serif" font-size="6" fill="#484440" letter-spacing="2">REDUCE E1 / E2</text>
+      <text x="24" y="66" font-family="Courier New" font-size="9.5" fill="#c4c0b4">E1 → E1'</text>
+      <text x="24" y="82" font-family="Courier New" font-size="9" fill="#7a7670">evaluate bounds once</text>
+      <rect x="198" y="32" width="148" height="56" fill="#1a1710" stroke="#3a3730" class="ra" style="animation-delay:.3s"/>
+      <text x="208" y="49" font-family="'Syncopate',sans-serif" font-size="6" fill="#484440" letter-spacing="2">BASE CASE</text>
+      <text x="208" y="66" font-family="Courier New" font-size="9.5" fill="#c4c0b4">n1 &gt; n2</text>
+      <text x="208" y="82" font-family="Courier New" font-size="9" fill="#7a7670">→ ⟨skip, σ⟩</text>
+      <rect x="14" y="108" width="332" height="70" fill="#111008" stroke="#c4c0b4" stroke-width="1.5" class="ra" style="animation-delay:.45s"/>
+      <text x="24" y="126" font-family="'Syncopate',sans-serif" font-size="6" fill="#888074" letter-spacing="2">UNFOLD — n1 ≤ n2</text>
+      <text x="24" y="148" font-family="Courier New" font-size="10.5" fill="#f0ece2">⟨for n1 to n2 do C, σ⟩</text>
+      <text x="24" y="168" font-family="Courier New" font-size="10.5" fill="#f0ece2">→ ⟨C ; for (n1+1) to n2 do C, σ⟩</text>
+      <path d="M 180 200 Q 340 200 340 190 Q 340 180 180 180" fill="none" stroke="#2a2720" stroke-width="1" stroke-dasharray="5,4" class="ra" style="animation-delay:.6s"/>
+      <text x="250" y="218" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="1">until n1 &gt; n2</text>
+      <text x="180" y="258" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#484440" letter-spacing="2" class="ra" style="animation-delay:.7s">same 3-rule structure for repeat</text>
+    </svg>
+  </div>
+</div>
+<div class="bd">
+
+  <div class="g2">
+    <div>
+      <div class="lbl">for E1 to E2 do C</div>
+      <div class="rb"><div class="rb-l">Rule 1 — reduce E1</div>⟨E1,σ⟩ → ⟨E1',σ⟩<br>────────────────────────────────────<br>⟨for E1 to E2 do C,σ⟩ → ⟨for E1' to E2 do C,σ⟩</div>
+      <div class="rb"><div class="rb-l">Rule 2 — reduce E2</div>⟨E2,σ⟩ → ⟨E2',σ⟩<br>────────────────────────────────────<br>⟨for n1 to E2 do C,σ⟩ → ⟨for n1 to E2' do C,σ⟩</div>
+      <div class="rb"><div class="rb-l">Rule 3 — base (n1 &gt; n2)</div>n1 &gt; n2<br>────────────────────────────<br>⟨for n1 to n2 do C,σ⟩ → ⟨skip,σ⟩</div>
+      <div class="rb"><div class="rb-l">Rule 4 — unfold (n1 ≤ n2)</div>n1 ≤ n2<br>──────────────────────────────────────────────────<br>⟨for n1 to n2 do C,σ⟩ → ⟨C ; for (n1+1) to n2 do C,σ⟩</div>
+    </div>
+    <div>
+      <div class="lbl">repeat E times C</div>
+      <div class="rb"><div class="rb-l">Rule 1 — reduce E</div>⟨E,σ⟩ → ⟨E',σ⟩<br>────────────────────────────────────<br>⟨repeat E times C,σ⟩ → ⟨repeat E' times C,σ⟩</div>
+      <div class="rb"><div class="rb-l">Rule 2 — base (n ≤ 0)</div>n ≤ 0<br>────────────────────────────<br>⟨repeat n times C,σ⟩ → ⟨skip,σ⟩</div>
+      <div class="rb"><div class="rb-l">Rule 3 — unfold (n &gt; 0)</div>n &gt; 0<br>──────────────────────────────────────────────<br>⟨repeat n times C,σ⟩ → ⟨C ; repeat (n−1) times C,σ⟩</div>
+      <div class="note"><strong>key:</strong> E is evaluated once and decremented — not re-evaluated each iteration.</div>
+    </div>
+  </div>
+
+  <a href="https://www.youtube.com/watch?v=2M5GHdNst4c" target="_blank" rel="noopener" class="vid-link">
+    <div class="vid-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="vid-meta">
+      <div class="vid-tag">Recommended watch</div>
+      <div class="vid-title">Operational Semantics — small-step reduction rules</div>
+      <div class="vid-src">YouTube · PL Theory</div>
+    </div>
+    <span class="vid-arr">→</span>
+  </a>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     S4 · FOR TRACE
+═══════════════════════════════════ -->
+<div class="sec" id="s4">
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-issue">Complete Derivation</div>
+    <div class="h-num">04</div>
+    <h1 class="h-title">For Loop<br><em>Trace</em></h1>
+    <p class="h-sub">σ₀ = {z↦0, x↦7, y↦99, n1↦1, n2↦3}. Step through interactively.</p>
+  </div>
+  <div class="hero-r">
+    <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <defs><style>.bv{animation:bvIn .8s cubic-bezier(.22,1,.36,1) both;transform-origin:left}@keyframes bvIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}</style></defs>
+      <text x="20" y="24" font-family="'Syncopate',sans-serif" font-size="7" fill="#484440" letter-spacing="2">STATE EVOLUTION</text>
+      <text x="20" y="60" font-family="Courier New" font-size="10" fill="#888074">x</text>
+      <rect x="36" y="50" width="20" height="10" fill="#3a3730" class="bv" style="animation-delay:.1s"/>
+      <text x="62" y="60" font-family="Courier New" font-size="9" fill="#606060">7→0</text>
+      <rect x="96" y="50" width="16" height="10" fill="#5a5850" class="bv" style="animation-delay:.25s"/>
+      <text x="118" y="60" font-family="Courier New" font-size="9" fill="#606060">→1</text>
+      <rect x="140" y="50" width="24" height="10" fill="#7a7870" class="bv" style="animation-delay:.4s"/>
+      <text x="170" y="60" font-family="Courier New" font-size="9" fill="#606060">→3</text>
+      <rect x="196" y="50" width="32" height="10" fill="#c4c0b4" class="bv" style="animation-delay:.55s"/>
+      <text x="234" y="60" font-family="Courier New" font-size="11" fill="#f0ece2" font-weight="bold">→6</text>
+
+      <text x="20" y="100" font-family="Courier New" font-size="10" fill="#888074">y</text>
+      <rect x="36" y="90" width="60" height="10" fill="#3a3730" class="bv" style="animation-delay:.15s"/>
+      <text x="102" y="100" font-family="Courier New" font-size="9" fill="#606060">99→1</text>
+      <rect x="140" y="90" width="16" height="10" fill="#5a5850" class="bv" style="animation-delay:.3s"/>
+      <text x="162" y="100" font-family="Courier New" font-size="9" fill="#606060">→2</text>
+      <rect x="184" y="90" width="24" height="10" fill="#7a7870" class="bv" style="animation-delay:.45s"/>
+      <text x="214" y="100" font-family="Courier New" font-size="9" fill="#606060">→3</text>
+      <rect x="236" y="90" width="32" height="10" fill="#c4c0b4" class="bv" style="animation-delay:.6s"/>
+      <text x="274" y="100" font-family="Courier New" font-size="11" fill="#f0ece2" font-weight="bold">→4</text>
+
+      <text x="20" y="140" font-family="Courier New" font-size="10" fill="#888074">z</text>
+      <rect x="36" y="130" width="240" height="10" fill="#2a2720" class="bv" style="animation-delay:.7s"/>
+      <text x="282" y="140" font-family="Courier New" font-size="11" fill="#f0ece2" font-weight="bold">24</text>
+
+      <rect x="20" y="178" width="320" height="72" fill="none" stroke="#c4c0b4" stroke-width="1.5"/>
+      <text x="34" y="200" font-family="'Syncopate',sans-serif" font-size="7" fill="#888074" letter-spacing="2">FINAL STATE</text>
+      <text x="34" y="224" font-family="Courier New" font-size="13" fill="#f0ece2">x=6 · y=4 · z=24</text>
+      <text x="34" y="242" font-family="Courier New" font-size="10" fill="#888074">n1=1 · n2=3 (unchanged)</text>
+    </svg>
+  </div>
+</div>
+<div class="bd">
+  <div class="code" data-l="program">
+x := 0 ; y := 1 ;<br>
+<span class="ck">for</span> !n1 <span class="ck">to</span> !n2 <span class="ck">do</span> (<br>
+&nbsp;&nbsp;x := !x + !y ;<br>
+&nbsp;&nbsp;y := !y + 1<br>
+) ;<br>
+z := !x * !y
+  </div>
+
+  <div class="lbl">Interactive stepper</div>
+
+  <div class="loop-step">
+    <div class="ls-ctrl">
+      <span class="ls-title">Small-Step Trace</span>
+      <div class="ls-btns">
+        <button class="ls-btn" onclick="lsPrev()">← back</button>
+        <button class="ls-btn" onclick="lsNext()">step →</button>
+        <button class="ls-btn" onclick="lsReset()">reset</button>
+      </div>
+    </div>
+    <div class="ls-prog"><div class="ls-fill" id="ls-fill" style="width:0%"></div></div>
+    <div class="ls-body" id="ls-body">
+      <!-- rows injected by JS -->
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-l">Final State</div>
+    <div class="ans-v" style="font-family:var(--mono);font-size:17px">σ = { x↦6, y↦4, z↦24, n1↦1, n2↦3 }</div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     S5 · TESTSCOPE
+═══════════════════════════════════ -->
+<div class="sec" id="s5">
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-issue">testScope</div>
+    <div class="h-num">05</div>
+    <h1 class="h-title">proc1<br><em>sees what?</em></h1>
+    <p class="h-sub">proc1 uses x but never declares it. Which x does it find?</p>
+  </div>
+  <div class="hero-r">
+    <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <defs><style>.sf{animation:sfIn .5s ease both}@keyframes sfIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}</style></defs>
+      <text x="90" y="22" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="3">LEXICAL</text>
+      <text x="270" y="22" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="3">DYNAMIC</text>
+      <line x1="180" y1="16" x2="180" y2="280" stroke="#2a2720" stroke-width="1"/>
+      <rect x="14" y="30" width="150" height="38" fill="#1a1710" stroke="#3a3730" class="sf" style="animation-delay:.1s"/>
+      <text x="24" y="45" font-family="Courier New" font-size="9.5" fill="#888074">global: x = 2</text>
+      <text x="24" y="60" font-family="'Syncopate',sans-serif" font-size="6" fill="#3a3730" letter-spacing="1">← proc1 defined here</text>
+      <rect x="14" y="72" width="150" height="28" fill="#2a2820" stroke="#2a2720" class="sf" style="animation-delay:.2s"/>
+      <text x="24" y="91" font-family="Courier New" font-size="9.5" fill="#606060">proc2: local x = 3</text>
+      <rect x="14" y="104" width="150" height="28" fill="#1a1710" stroke="#2a2720" class="sf" style="animation-delay:.3s"/>
+      <text x="24" y="123" font-family="Courier New" font-size="9.5" fill="#606060">proc1: searching x...</text>
+      <rect x="14" y="168" width="150" height="52" fill="none" stroke="#c4c0b4" stroke-width="1.5" class="sf" style="animation-delay:.5s"/>
+      <text x="89" y="188" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#888074" letter-spacing="2">sees global x</text>
+      <text x="89" y="214" text-anchor="middle" font-family="'Cormorant',serif" font-size="40" font-weight="600" fill="#f0ece2">x=2</text>
+      <rect x="196" y="30" width="150" height="28" fill="#1a1710" stroke="#2a2720" class="sf" style="animation-delay:.15s"/>
+      <text x="206" y="49" font-family="Courier New" font-size="9.5" fill="#606060">global: x = 2</text>
+      <rect x="196" y="62" width="150" height="36" fill="#3a3830" stroke="#c4c0b4" stroke-width="1" class="sf" style="animation-delay:.25s"/>
+      <text x="206" y="77" font-family="Courier New" font-size="9.5" fill="#e0dbd0">proc2: x = 3</text>
+      <text x="206" y="91" font-family="'Syncopate',sans-serif" font-size="5.5" fill="#888074" letter-spacing="1">← most recent x found</text>
+      <rect x="196" y="102" width="150" height="28" fill="#1a1710" stroke="#2a2720" class="sf" style="animation-delay:.35s"/>
+      <text x="206" y="121" font-family="Courier New" font-size="9.5" fill="#606060">proc1: searching...</text>
+      <rect x="196" y="168" width="150" height="52" fill="none" stroke="#c4c0b4" stroke-width="1.5" class="sf" style="animation-delay:.55s"/>
+      <text x="271" y="188" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#888074" letter-spacing="2">sees proc2's x</text>
+      <text x="271" y="214" text-anchor="middle" font-family="'Cormorant',serif" font-size="40" font-weight="600" fill="#f0ece2">x=3</text>
+    </svg>
+  </div>
+</div>
+<div class="bd">
+  <div class="code" data-l="testScope">
+<span class="ck">var</span> x: int;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// global x</span><br>
+<br>
+<span class="ck">procedure</span> <span class="cf">proc1</span>()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// x is FREE</span><br>
+begin&nbsp;&nbsp;print("x=" + x);&nbsp;&nbsp;end;<br>
+<br>
+<span class="ck">procedure</span> <span class="cf">proc2</span>()<br>
+<span class="ck">var</span> x: int;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">// local x</span><br>
+begin&nbsp;&nbsp;x := 3;&nbsp;&nbsp;proc1();&nbsp;&nbsp;end;<br>
+<br>
+begin&nbsp;&nbsp;x := 2;&nbsp;&nbsp;proc2();&nbsp;&nbsp;end;
+  </div>
+
+  <div class="envs">
+    <div class="env">
+      <div class="env-hd">Lexical — proc1's defining scope</div>
+      <div class="env-row"><span class="ev">proc1 defined at</span><span class="ev2">global level</span></div>
+      <div class="env-row"><span class="ev">global x</span><span class="ev2">2 (set in main)</span></div>
+      <div class="env-row"><span class="ev">proc2's x</span><span class="ev2">not in scope here</span></div>
+      <div class="env-row"><span class="ev">proc1 sees</span><span class="ev2 found">x = 2</span></div>
+    </div>
+    <div class="env">
+      <div class="env-hd">Dynamic — call stack at runtime</div>
+      <div class="env-row"><span class="ev">global: x</span><span class="ev2">2</span></div>
+      <div class="env-row"><span class="ev">proc2: x</span><span class="ev2 found">3 ← first match</span></div>
+      <div class="env-row"><span class="ev">proc1: searching</span><span class="ev2">↑ walks up</span></div>
+      <div class="env-row"><span class="ev">proc1 sees</span><span class="ev2 found">x = 3</span></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="ans"><div class="ans-l">Lexical scope prints</div><div class="ans-v">x=2</div></div>
+    <div class="ans"><div class="ans-l">Dynamic scope prints</div><div class="ans-v">x=3</div></div>
+  </div>
+
+  <hr>
+  <div class="lbl">More scope exercises</div>
+  <div class="carousel-wrap" id="car-ts">
+    <div class="carousel-header">
+      <span class="carousel-title">testScope Variations</span>
+      <div class="carousel-nav">
+        <button class="car-btn" onclick="carPrev('ts')">← prev</button>
+        <span class="car-counter" id="ts-ctr">1 / 3</span>
+        <button class="car-btn" onclick="carNext('ts')">next →</button>
+      </div>
+    </div>
+    <div class="carousel-track" id="ts-track">
+      <div class="car-slide active">
+        <div class="car-slide-head"><div class="car-q">What if proc2 did NOT declare its own x? What would both scopes print?</div><span class="car-diff med">medium</span></div>
+        <div class="steps-wrap" id="sw-ts1">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">No local x in proc2</div><div class="step-content">proc2 uses the global x directly. x := 3 modifies <span class="hi">global x</span>.</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">Both scopes</div><div class="step-content">There is only one x now — the global one. Both lexical and dynamic see <span class="hi">x = 3</span> when proc1 runs.</div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-ts1',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-ts1"><div class="ans-tag">Answer</div><div class="ans-body">Both print x=3</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-ts1').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+      <div class="car-slide">
+        <div class="car-slide-head"><div class="car-q">What if proc2 called proc1 <em>before</em> doing x := 3? (lexical vs dynamic)</div><span class="car-diff hard">hard</span></div>
+        <div class="steps-wrap" id="sw-ts2">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">Execution order</div><div class="step-content">proc1() fires before x := 3. At that point proc2's local x is uninitialized (or 0).</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">Lexical</div><div class="step-content">proc1 still looks at global x = 2. Order of execution inside proc2 doesn't matter → <span class="hi">x=2</span></div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">Dynamic</div><div class="step-content">proc2's x exists but is 0 (uninitialized). Stack has proc2: x=0 → <span class="hi">x=0</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-ts2',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-ts2"><div class="ans-tag">Answer</div><div class="ans-body">Lexical: x=2 &nbsp;|&nbsp; Dynamic: x=0</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-ts2').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+      <div class="car-slide">
+        <div class="car-slide-head"><div class="car-q">Why do most modern languages choose lexical scope over dynamic?</div><span class="car-diff med">medium</span></div>
+        <div class="steps-wrap" id="sw-ts3">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">Predictability</div><div class="step-content">Under lexical scope, you can read the type and behavior of a function just by looking at its source. You don't need to know who called it.</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">Type checking</div><div class="step-content">Static type checkers need to know what type a variable has at compile time. With dynamic scope, x could be Int or String depending on the call chain — unresolvable without running the program.</div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">Closures</div><div class="step-content">First-class functions (passing functions as values) only make sense with lexical scope. A function passed to a different call site would see completely different variables under dynamic scope.</div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-ts3',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-ts3"><div class="ans-tag">Answer</div><div class="ans-body" style="font-size:17px">Lexical scope enables static analysis, type checking, and safe first-class functions.</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-ts3').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     S6 · PARAMETERS
+═══════════════════════════════════ -->
+<div class="sec" id="s6">
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-issue">Parameter Passing</div>
+    <div class="h-num">06</div>
+    <h1 class="h-title">ref,&thinsp;name,<br><em>VR</em></h1>
+    <p class="h-sub">Three modes. Three different moments of effect. Getting the order wrong costs points.</p>
+  </div>
+  <div class="hero-r">
+    <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <defs><style>.tb{animation:tbIn 1s cubic-bezier(.22,1,.36,1) both;transform-origin:left}@keyframes tbIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}.dp{animation:dpIn .4s cubic-bezier(.22,1,.36,1) both}@keyframes dpIn{from{transform:scale(0)}to{transform:scale(1)}}</style></defs>
+      <line x1="40" y1="220" x2="330" y2="220" stroke="#2a2720" stroke-width="1"/>
+      <text x="40" y="238" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="2">CALL</text>
+      <text x="295" y="238" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#484440" letter-spacing="2">RETURN</text>
+      <circle cx="40" cy="220" r="3.5" fill="#c4c0b4" class="dp" style="animation-delay:.1s"/>
+      <circle cx="330" cy="220" r="3.5" fill="#c4c0b4" class="dp" style="animation-delay:.2s"/>
+      <text x="30" y="56" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#888074" letter-spacing="2">REF</text>
+      <rect x="40" y="62" width="290" height="16" fill="#c4c0b4" class="tb" style="animation-delay:.3s"/>
+      <text x="50" y="74" font-family="'Syncopate',sans-serif" font-size="7" fill="#0a0905">immediate · continuous · permanent</text>
+      <text x="30" y="106" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#888074" letter-spacing="2">NAME</text>
+      <circle cx="100" cy="108" r="5.5" fill="#4a4840" class="dp" style="animation-delay:.5s"/>
+      <circle cx="195" cy="108" r="5.5" fill="#4a4840" class="dp" style="animation-delay:.7s"/>
+      <circle cx="280" cy="108" r="5.5" fill="#4a4840" class="dp" style="animation-delay:.9s"/>
+      <text x="95" y="124" font-family="'Syncopate',sans-serif" font-size="6" fill="#606060">use 1</text>
+      <text x="190" y="124" font-family="'Syncopate',sans-serif" font-size="6" fill="#606060">use 2</text>
+      <text x="275" y="124" font-family="'Syncopate',sans-serif" font-size="6" fill="#606060">use 3</text>
+      <text x="30" y="160" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#888074" letter-spacing="2">VR</text>
+      <rect x="40" y="166" width="285" height="16" fill="#2a2720" class="tb" style="animation-delay:1.1s"/>
+      <text x="50" y="178" font-family="Courier New" font-size="8" fill="#606060">local copy — no external effect</text>
+      <rect x="320" y="163" width="10" height="22" fill="#c4c0b4" class="dp" style="animation-delay:1.3s"/>
+      <text x="316" y="198" font-family="'Syncopate',sans-serif" font-size="6" fill="#888074">wb</text>
+    </svg>
+  </div>
+</div>
+<div class="bd">
+  <table class="ct">
+    <tr><th>Mode</th><th>Keyword</th><th>Mechanism</th><th>When visible outside</th></tr>
+    <tr><td>Call by Reference</td><td class="mo">ref</td><td>Alias to original variable. Reads and writes go directly to the caller's memory.</td><td>Immediately, continuously.</td></tr>
+    <tr><td>Call by Name</td><td class="mo">name</td><td>Expression is textually substituted. Re-evaluated at every use with the current state.</td><td>At each use — may access different locations if other vars changed.</td></tr>
+    <tr><td>Call by Value-Result</td><td class="mo">VR</td><td>Value copied in at call. Local copy used throughout. Final value copied back to caller on return.</td><td>Only on return.</td></tr>
+    <tr><td>Call by Value</td><td class="mo">(default)</td><td>Value copied in. Function works on its own isolated copy.</td><td>Never.</td></tr>
+  </table>
+
+  <div class="pull">Call-by-name is the only mode where two consecutive reads of the same parameter may yield different values.</div>
+
+  <a href="https://www.youtube.com/watch?v=BDgfnBb7ICA" target="_blank" rel="noopener" class="vid-link">
+    <div class="vid-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    <div class="vid-meta">
+      <div class="vid-tag">Recommended watch</div>
+      <div class="vid-title">Parameter Passing Modes — ref, value, name, VR explained</div>
+      <div class="vid-src">YouTube · Programming Languages Concepts</div>
+    </div>
+    <span class="vid-arr">→</span>
+  </a>
+
+  <hr>
+  <div class="lbl">Exercises — parameter modes</div>
+  <div class="carousel-wrap" id="car-pm">
+    <div class="carousel-header">
+      <span class="carousel-title">Parameter Passing Problems</span>
+      <div class="carousel-nav">
+        <button class="car-btn" onclick="carPrev('pm')">← prev</button>
+        <span class="car-counter" id="pm-ctr">1 / 3</span>
+        <button class="car-btn" onclick="carNext('pm')">next →</button>
+      </div>
+    </div>
+    <div class="carousel-track" id="pm-track">
+      <div class="car-slide active">
+        <div class="car-slide-head"><div class="car-q">Given <code style="font-family:var(--mono)">proc test(ref x, name y, VR z)</code> with call <code style="font-family:var(--mono)">test(i, a[i], i)</code> and i=0: what happens on line 8?</div><span class="car-diff med">medium</span></div>
+        <div class="steps-wrap" id="sw-pm1">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">x is ref — alias for i</div><div class="step-content">x reads i = 0. x := 0 + 1 = 1. Ref writes back: <span class="hi">i = 1</span> immediately.</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">Consequence</div><div class="step-content">i changed from 0 to 1. Every future use of name parameter y evaluates a[<span class="hi">1</span>], not a[0].</div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-pm1',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-pm1"><div class="ans-tag">After line 8</div><div class="ans-body" style="font-family:var(--mono);font-size:16px">i = 1 · a unchanged</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-pm1').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+      <div class="car-slide">
+        <div class="car-slide-head"><div class="car-q">What does VR do differently from ref? Why does i end up as 2?</div><span class="car-diff med">medium</span></div>
+        <div class="steps-wrap" id="sw-pm2">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">VR at call time</div><div class="step-content">z receives a copy of i = 0. z_local = 0. i is NOT aliased.</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">z := z + 2</div><div class="step-content">z_local = 0 + 2 = 2. i is still 1 at this point (from ref).</div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">On return</div><div class="step-content">VR copies z_local = 2 back to i. <span class="hi">i = 2</span> (overwrites ref's i=1).</div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-pm2',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-pm2"><div class="ans-tag">Answer</div><div class="ans-body" style="font-family:var(--mono);font-size:16px">i = 2 after return (VR write-back)</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-pm2').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+      <div class="car-slide">
+        <div class="car-slide-head"><div class="car-q">If the call were <code style="font-family:var(--mono)">test(i, a[0], i)</code> instead — same initial state — what would a look like after?</div><span class="car-diff hard">hard</span></div>
+        <div class="steps-wrap" id="sw-pm3">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><div class="step-lbl">y is now name a[0] — fixed index</div><div class="step-content">y always evaluates to a[0], regardless of what i becomes. The expression is a[0], not a[i].</div></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><div class="step-lbl">Line 9</div><div class="step-content">y reads a[0] = 0. y := 0+1=1. Writes a[0] := 1. <span class="hi">a = {1,10,20,40}</span></div></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><div class="step-lbl">Line 11</div><div class="step-content">y reads a[0] = 1. y := 1+1=2. Writes a[0] := 2. <span class="hi">a = {2,10,20,40}</span></div></div></div>
+        </div>
+        <button class="reveal-btn" onclick="revealSteps('sw-pm3',this)">reveal steps</button>
+        <div class="ans-reveal" id="ar-pm3"><div class="ans-tag">Answer</div><div class="ans-body" style="font-family:var(--mono);font-size:16px">a = { 2, 10, 20, 40 } · i = 2</div></div>
+        <button class="reveal-btn" style="margin-top:.5rem" onclick="document.getElementById('ar-pm3').classList.add('shown');this.disabled=true">show answer</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════
+     S7 · TESTPARAMS
+═══════════════════════════════════ -->
+<div class="sec" id="s7">
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-issue">testParams — Solved</div>
+    <div class="h-num">07</div>
+    <h1 class="h-title">test(i,<br><em>a[i], i)</em></h1>
+    <p class="h-sub">a={0,10,20,40}, i=0. Click each line to see what happens.</p>
+  </div>
+  <div class="hero-r">
+    <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <defs><style>.cl{animation:clIn .5s ease both}@keyframes clIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}</style></defs>
+      <text x="180" y="22" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#484440" letter-spacing="2">ARRAY a EVOLUTION</text>
+      <!-- cells row 1: initial -->
+      <text x="20" y="46" font-family="'Syncopate',sans-serif" font-size="6" fill="#484440" letter-spacing="2">initial</text>
+      <rect x="20" y="52" width="56" height="44" fill="#1a1710" stroke="#3a3730" class="cl" style="animation-delay:.1s"/>
+      <text x="48" y="68" text-anchor="middle" font-family="Courier New" font-size="8.5" fill="#888074">a[0]</text>
+      <text x="48" y="86" text-anchor="middle" font-family="'Cormorant',serif" font-size="22" font-weight="600" fill="#c4c0b4">0</text>
+      <rect x="80" y="52" width="56" height="44" fill="#1a1710" stroke="#3a3730" class="cl" style="animation-delay:.2s"/>
+      <text x="108" y="68" text-anchor="middle" font-family="Courier New" font-size="8.5" fill="#888074">a[1]</text>
+      <text x="108" y="86" text-anchor="middle" font-family="'Cormorant',serif" font-size="22" font-weight="600" fill="#c4c0b4">10</text>
+      <rect x="140" y="52" width="56" height="44" fill="#1a1710" stroke="#3a3730" class="cl" style="animation-delay:.3s"/>
+      <text x="168" y="68" text-anchor="middle" font-family="Courier New" font-size="8.5" fill="#888074">a[2]</text>
+      <text x="168" y="86" text-anchor="middle" font-family="'Cormorant',serif" font-size="22" font-weight="600" fill="#c4c0b4">20</text>
+      <rect x="200" y="52" width="56" height="44" fill="#1a1710" stroke="#3a3730" class="cl" style="animation-delay:.4s"/>
+      <text x="228" y="68" text-anchor="middle" font-family="Courier New" font-size="8.5" fill="#888074">a[3]</text>
+      <text x="228" y="86" text-anchor="middle" font-family="'Cormorant',serif" font-size="22" font-weight="600" fill="#c4c0b4">40</text>
+      <!-- i pointer initial -->
+      <text x="48" y="110" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#888074">i=0↑</text>
+      <!-- after line 8 -->
+      <text x="20" y="134" font-family="'Syncopate',sans-serif" font-size="6" fill="#484440" letter-spacing="1">after line 8</text>
+      <rect x="80" y="140" width="56" height="44" fill="#2a2820" stroke="#c4c0b4" stroke-width="1.5" class="cl" style="animation-delay:.6s"/>
+      <text x="108" y="156" text-anchor="middle" font-family="Courier New" font-size="8.5" fill="#888074">a[1]</text>
+      <text x="108" y="174" text-anchor="middle" font-family="'Cormorant',serif" font-size="22" font-weight="600" fill="#f0ece2">10</text>
+      <text x="108" y="198" text-anchor="middle" font-family="'Syncopate',sans-serif" font-size="7" fill="#888074">i=1↑</text>
+      <!-- after line 9 -->
+      <text x="180" y="134" font-family="'Syncopate',sans-serif" font-size="6" fill="#484440" letter-spacing="1">after line 9</text>
+      <rect x="246" y="140" width="56" height="44" fill="#3a3830" stroke="#c4c0b4" stroke-width="2" class="cl" style="animation-delay:.8s"/>
+      <text x="274" y="156" text-anchor="middle" font-family="Courier New" font-size="8.5" fill="#888074">a[1]</text>
+      <text x="274" y="174" text-anchor="middle" font-family="'Cormorant',serif" font-size="22" font-weight="600" fill="#f0ece2">11</text>
+      <!-- final -->
+      <rect x="20" y="220" width="320" height="32" fill="none" stroke="#c4c0b4" stroke-width="1.5" class="cl" style="animation-delay:1s"/>
+      <text x="34" y="232" font-family="'Syncopate',sans-serif" font-size="6.5" fill="#888074" letter-spacing="2">FINAL</text>
+      <text x="34" y="246" font-family="Courier New" font-size="11" fill="#f0ece2">a = {0,12,20,40} · i = 2</text>
+    </svg>
+  </div>
+</div>
+<div class="bd">
+  <div class="code" data-l="testParams">
+<span class="ck">proc</span> <span class="cf">test</span>(<span class="ck">ref</span> x:int, <span class="ck">name</span> y:int, <span class="ck">VR</span> z:int)<br>
+begin<br>
+&nbsp;&nbsp;x := x+1;&nbsp;&nbsp;<span class="cc">// line 8</span><br>
+&nbsp;&nbsp;y := y+1;&nbsp;&nbsp;<span class="cc">// line 9</span><br>
+&nbsp;&nbsp;z := z+2;&nbsp;&nbsp;<span class="cc">// line 10</span><br>
+&nbsp;&nbsp;y := y+1;&nbsp;&nbsp;<span class="cc">// line 11</span><br>
+end<br><br>
+a:={0,10,20,40}; i:=0; test(i, a[i], i);
+  </div>
+
+  <div class="lbl">Interactive — click each line to see its effect</div>
+
+  <!-- array viz -->
+  <div>
+    <div class="arr-viz" id="arrViz">
+      <div style="display:flex;flex-direction:column;width:100%">
+        <div class="av-i-ptr" id="iPtr">
+          <div class="av-ptr active" id="ptr0">i=0</div>
+          <div class="av-ptr" id="ptr1">i=1</div>
+          <div class="av-ptr" id="ptr2"></div>
+          <div class="av-ptr" id="ptr3"></div>
+        </div>
+        <div style="display:flex;gap:3px">
+          <div class="av-cell" id="cell0"><div class="av-idx">a[0]</div><div class="av-val" id="v0">0</div></div>
+          <div class="av-cell" id="cell1"><div class="av-idx">a[1]</div><div class="av-val" id="v1">10</div></div>
+          <div class="av-cell" id="cell2"><div class="av-idx">a[2]</div><div class="av-val" id="v2">20</div></div>
+          <div class="av-cell" id="cell3"><div class="av-idx">a[3]</div><div class="av-val" id="v3">40</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="font-family:var(--mono);font-size:12px;color:var(--smoke);margin-bottom:1rem">i = <strong id="iVal" style="color:var(--ink)">0</strong> &nbsp;&nbsp; z_local = <strong id="zVal" style="color:var(--ink)">0</strong></div>
+  </div>
+
+  <div class="pt-wrap">
+    <div class="pt-head">
+      <span>line</span><span>operation</span><span>i (ref x)</span><span>a[i] (name y)</span><span>z_local (VR)</span>
+    </div>
+    <div class="pt-line" onclick="ptClick(0)">
+      <span class="pt-ln">setup</span>
+      <span class="pt-op" style="font-family:var(--mono)">test(i, a[i], i)</span>
+      <span class="pt-x">alias for i=0</span>
+      <span class="pt-y">a[i] with i=0</span>
+      <span class="pt-z">copy: z=0</span>
+    </div>
+    <div class="pt-tooltip" id="tt0">Bindings established. x is an alias for i. y will evaluate a[i] at each use. z_local = 0 (copy of i).</div>
+    <div class="pt-line" onclick="ptClick(1)">
+      <span class="pt-ln">line 8</span>
+      <span class="pt-op" style="font-family:var(--mono)">x := x+1</span>
+      <span class="pt-x pt-changed">i → 1</span>
+      <span class="pt-y">a[i] now a[1]!</span>
+      <span class="pt-z">z=0 unchanged</span>
+    </div>
+    <div class="pt-tooltip" id="tt1">x reads i=0, computes 0+1=1, writes back via ref. i is now 1. All future uses of name y evaluate a[1], not a[0].</div>
+    <div class="pt-line" onclick="ptClick(2)">
+      <span class="pt-ln">line 9</span>
+      <span class="pt-op" style="font-family:var(--mono)">y := y+1</span>
+      <span class="pt-x">i=1 unchanged</span>
+      <span class="pt-y pt-changed">a[1]: 10→11</span>
+      <span class="pt-z">z=0 unchanged</span>
+    </div>
+    <div class="pt-tooltip" id="tt2">y evaluates a[i]=a[1]=10. Computes 10+1=11. Writes a[1]:=11. Array is now {0,11,20,40}.</div>
+    <div class="pt-line" onclick="ptClick(3)">
+      <span class="pt-ln">line 10</span>
+      <span class="pt-op" style="font-family:var(--mono)">z := z+2</span>
+      <span class="pt-x">i=1 unchanged</span>
+      <span class="pt-y">a unchanged</span>
+      <span class="pt-z pt-changed">z_local: 0→2</span>
+    </div>
+    <div class="pt-tooltip" id="tt3">z_local = 0+2 = 2. This only affects the local copy — i and a are NOT changed yet.</div>
+    <div class="pt-line" onclick="ptClick(4)">
+      <span class="pt-ln">line 11</span>
+      <span class="pt-op" style="font-family:var(--mono)">y := y+1</span>
+      <span class="pt-x">i=1 unchanged</span>
+      <span class="pt-y pt-changed">a[1]: 11→12</span>
+      <span class="pt-z">z_local=2</span>
+    </div>
+    <div class="pt-tooltip" id="tt4">y evaluates a[1]=11 again. Computes 11+1=12. Writes a[1]:=12. Array is now {0,12,20,40}.</div>
+    <div class="pt-line" onclick="ptClick(5)">
+      <span class="pt-ln">return</span>
+      <span class="pt-op" style="font-family:var(--mono)">VR write-back</span>
+      <span class="pt-x pt-changed">i → 2</span>
+      <span class="pt-y">a={0,12,20,40}</span>
+      <span class="pt-z pt-changed">z_local=2 → i</span>
+    </div>
+    <div class="pt-tooltip" id="tt5">VR copies z_local=2 back to i. i is now 2 (overwrites ref's i=1). Final state reached.</div>
+  </div>
+
+  <div class="g2">
+    <div class="ans"><div class="ans-l">i after execution</div><div class="ans-v">2</div><div class="ans-n">VR write-back overwrites ref's i=1</div></div>
+    <div class="ans"><div class="ans-l">a after execution</div><div class="ans-v" style="font-family:var(--mono);font-size:18px">{ 0, 12, 20, 40 }</div><div class="ans-n">only a[1] modified — ref moved the name pointer before writes</div></div>
+  </div>
+</div>
+</div>
+
+</main>
+
+<script>
+/* ── NAVIGATION ── */
+function show(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  const all=document.querySelectorAll('.nb');
+  const idx=Array.from(all).indexOf(btn);
+  document.getElementById('pf').style.width=((idx+1)/all.length*100)+'%';
+}
+document.getElementById('pf').style.width=(1/7*100)+'%';
+
+/* ── CAROUSEL ── */
+const carState={};
+function initCar(name){
+  const track=document.getElementById(name+'-track');
+  const slides=track.querySelectorAll('.car-slide');
+  carState[name]={cur:0,total:slides.length};
+}
+['types','scope','ts','pm'].forEach(initCar);
+
+function carGo(name,dir){
+  const s=carState[name];
+  const track=document.getElementById(name+'-track');
+  const slides=track.querySelectorAll('.car-slide');
+  slides[s.cur].classList.remove('active');
+  s.cur=(s.cur+dir+s.total)%s.total;
+  slides[s.cur].classList.add('active');
+  track.style.transform=`translateX(-${s.cur*100}%)`;
+  document.getElementById(name+'-ctr').textContent=`${s.cur+1} / ${s.total}`;
+}
+function carNext(n){carGo(n,1)}
+function carPrev(n){carGo(n,-1)}
+
+/* ── STEP REVEAL ── */
+function revealSteps(id,btn){
+  const wrap=document.getElementById(id);
+  const steps=wrap.querySelectorAll('.step');
+  steps.forEach((s,i)=>setTimeout(()=>s.classList.add('shown'),i*180));
+  btn.disabled=true;
+}
+
+/* ── SCOPE ANIMATOR ── */
+let scopeDone=false;
+function animateScope(){
+  if(scopeDone)return;
+  scopeDone=true;
+  const seq=[
+    ()=>{document.getElementById('lx-main').classList.add('active')},
+    ()=>{document.getElementById('lx-f').classList.add('active')},
+    ()=>{const a=document.getElementById('lx-ans');a.style.display='inline';document.getElementById('lx-lbl').style.display='block'},
+    ()=>{document.getElementById('dy-f').classList.add('active')},
+    ()=>{const a=document.getElementById('dy-ans');a.style.display='inline';document.getElementById('dy-lbl').style.display='block'},
+  ];
+  seq.forEach((fn,i)=>setTimeout(fn,(i+1)*600));
+}
+
+/* ── LOOP STEPPER ── */
+const lsSteps=[
+  {i:'1',conf:'⟨x:=0 ; y:=1 ; for... ; z:=..., σ₀⟩',state:'σ₁ = {x↦0,y↦99,...}',rule:'assign x:=0'},
+  {i:'2',conf:'⟨skip ; y:=1 ; for... ; z:=..., σ₁⟩',state:'',rule:'seq-skip'},
+  {i:'3',conf:'⟨y:=1 ; for... ; z:=..., σ₁⟩',state:'σ₂ = {x↦0,y↦1,...}',rule:'assign y:=1'},
+  {i:'4',conf:'⟨skip ; for... ; z:=..., σ₂⟩',state:'',rule:'seq-skip'},
+  {i:'5',conf:'⟨for !n1 to !n2 do (...) ; z:=..., σ₂⟩',state:'',rule:'seq-skip'},
+  {i:'6',conf:'⟨for 1 to !n2 do (...) ; z:=..., σ₂⟩',state:'!n1=1',rule:'deref !n1'},
+  {i:'7',conf:'⟨for 1 to 3 do (...) ; z:=..., σ₂⟩',state:'!n2=3',rule:'deref !n2'},
+  {i:'8',conf:'⟨(x:=!x+!y;y:=!y+1) ; for 2 to 3 do..., σ₂⟩',state:'1≤3',rule:'for-unfold'},
+  {i:'9-12',conf:'x:=0+1=1 — σ₃={x↦1,y↦1,...}',state:'deref,arith,assign x',rule:'multi-step'},
+  {i:'13-16',conf:'y:=1+1=2 — σ₄={x↦1,y↦2,...}',state:'deref,arith,assign y',rule:'multi-step'},
+  {i:'17',conf:'⟨for 2 to 3 do (...) ; z:=..., σ₄⟩',state:'',rule:'seq-skip'},
+  {i:'18',conf:'⟨(x:=!x+!y;y:=!y+1) ; for 3 to 3..., σ₄⟩',state:'2≤3',rule:'for-unfold'},
+  {i:'19-22',conf:'x:=1+2=3 — σ₅={x↦3,y↦2,...}',state:'',rule:'multi-step'},
+  {i:'23-26',conf:'y:=2+1=3 — σ₆={x↦3,y↦3,...}',state:'',rule:'multi-step'},
+  {i:'27',conf:'⟨for 3 to 3 do (...) ; z:=..., σ₆⟩',state:'',rule:'seq-skip'},
+  {i:'28',conf:'⟨(x:=!x+!y;y:=!y+1) ; for 4 to 3..., σ₆⟩',state:'3≤3',rule:'for-unfold'},
+  {i:'29-32',conf:'x:=3+3=6 — σ₇={x↦6,y↦3,...}',state:'',rule:'multi-step'},
+  {i:'33-36',conf:'y:=3+1=4 — σ₈={x↦6,y↦4,...}',state:'',rule:'multi-step'},
+  {i:'37',conf:'⟨for 4 to 3 do (...) ; z:=..., σ₈⟩',state:'4>3',rule:'for-base → skip'},
+  {i:'38',conf:'⟨z:=!x*!y, σ₈⟩',state:'seq-skip',rule:'seq-skip'},
+  {i:'39-41',conf:'z:=6*4=24 — σ₉={x↦6,y↦4,z↦24,...}',state:'',rule:'deref,arith,assign'},
+  {i:'final',conf:'⟨skip, σ₉⟩ — no further rules',state:'DONE',rule:'✓'},
+];
+let lsCur=0;
+function renderLS(){
+  const body=document.getElementById('ls-body');
+  body.innerHTML='';
+  const shown=lsSteps.slice(0,lsCur+1);
+  shown.forEach((s,idx)=>{
+    const row=document.createElement('div');
+    row.className='ls-row'+(idx===lsCur?' curr':'');
+    row.innerHTML=`<div class="ls-i">${s.i}</div>
+      <div class="ls-conf">${s.conf.replace(/σ[₀-₉]|done|DONE/gi,m=>`<span class="hi">${m}</span>`)}<br><span style="font-size:9.5px;color:var(--dust)">${s.state}</span></div>
+      <div class="ls-state">${s.rule}</div>`;
+    body.appendChild(row);
+  });
+  document.getElementById('ls-fill').style.width=((lsCur+1)/lsSteps.length*100)+'%';
+  // scroll last into view
+  const rows=body.querySelectorAll('.ls-row');
+  if(rows.length>0)rows[rows.length-1].scrollIntoView({block:'nearest'});
+}
+function lsNext(){if(lsCur<lsSteps.length-1){lsCur++;renderLS()}}
+function lsPrev(){if(lsCur>0){lsCur--;renderLS()}}
+function lsReset(){lsCur=0;renderLS()}
+renderLS();
+
+/* ── PARAM TABLE ── */
+const ptState={
+  i:[0,1,1,1,1,2],
+  a:[[0,10,20,40],[0,10,20,40],[0,11,20,40],[0,11,20,40],[0,12,20,40],[0,12,20,40]],
+  z:[0,0,0,2,2,2]
+};
+let ptCur=-1;
+function ptClick(idx){
+  // hide all tooltips, deactivate all lines
+  document.querySelectorAll('.pt-tooltip').forEach(t=>t.classList.remove('shown'));
+  document.querySelectorAll('.pt-line').forEach(l=>l.classList.remove('active'));
+  if(ptCur===idx){ptCur=-1;resetArrayViz();return}
+  ptCur=idx;
+  document.querySelectorAll('.pt-line')[idx].classList.add('active');
+  document.getElementById('tt'+idx).classList.add('shown');
+  // update viz
+  const arr=ptState.a[idx];
+  const i=ptState.i[idx];
+  const z=ptState.z[idx];
+  for(let c=0;c<4;c++){
+    document.getElementById('v'+c).textContent=arr[c];
+    const prev=idx>0?ptState.a[idx-1][c]:ptState.a[0][c];
+    if(arr[c]!==prev||idx===0){
+      document.getElementById('cell'+c).classList.toggle('changed',arr[c]!==(idx>0?ptState.a[idx-1][c]:ptState.a[0][c])&&idx>0);
+    }
+  }
+  document.getElementById('iVal').textContent=i;
+  document.getElementById('zVal').textContent=z;
+  // i pointer
+  for(let p=0;p<4;p++){
+    document.getElementById('ptr'+p).classList.toggle('active',p===i);
+  }
+}
+function resetArrayViz(){
+  for(let c=0;c<4;c++){
+    document.getElementById('v'+c).textContent=ptState.a[0][c];
+    document.getElementById('cell'+c).classList.remove('changed');
+  }
+  document.getElementById('iVal').textContent=0;
+  document.getElementById('zVal').textContent=0;
+  document.getElementById('ptr0').classList.add('active');
+  document.getElementById('ptr1').classList.remove('active');
+}
+</script>
+</body>
+</html>
